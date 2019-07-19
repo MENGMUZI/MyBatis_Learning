@@ -12,6 +12,17 @@ public class Employee {
     private String email;
     private Integer gender;
 
+
+    public Employee() {
+    }
+
+    public Employee(Integer id, String empName, String email, Integer gender) {
+        this.id = id;
+        this.empName = empName;
+        this.email = email;
+        this.gender = gender;
+    }
+
     public Integer getId() {
         return id;
     }
