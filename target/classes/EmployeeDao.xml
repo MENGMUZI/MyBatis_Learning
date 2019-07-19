@@ -30,7 +30,13 @@
     </delete>
 
     <!--public int insertEmployee(Employee employee);-->
-    <insert id="insertEmployee">
+    <!-- parameterType：参数类型，可以省略，
+    获取自增主键的值：
+        mysql支持自增主键，自增主键值的获取，mybatis也是利用statement.getGenreatedKeys()；
+        useGeneratedKeys="true"；使用自增主键获取主键值策略
+        keyProperty；指定对应的主键属性，也就是mybatis获取到主键值以后，将这个值封装给javaBean的哪个属性
+    -->
+    <insert id="insertEmployee" useGeneratedKeys="true" keyProperty="id">
         insert into t_employee (empName,gender,email) values (#{empName},#{gender},#{email})
     </insert>
 

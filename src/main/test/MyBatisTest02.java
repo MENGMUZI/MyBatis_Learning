@@ -41,7 +41,7 @@ public class MyBatisTest02 {
         // 执行sql要用的参数：parameter A parameter object to pass to the statement.
         SqlSessionFactory sqlSessionFactory = getSqlSessionFactory();
 
-        SqlSession openSession = sqlSessionFactory.openSession();
+        SqlSession openSession = sqlSessionFactory.openSession(true);
         try {
             Employee employee = openSession.selectOne(
                     "com.atguigu.mybatis.dao.EmployeeMapper.getEmpById", 1);
@@ -51,13 +51,13 @@ public class MyBatisTest02 {
         }
 
     }
-
+    //查询操作
     @Test
     public void test01() throws IOException {
         // 1、获取sqlSessionFactory对象
         SqlSessionFactory sqlSessionFactory = getSqlSessionFactory();
         // 2、获取sqlSession对象
-        SqlSession openSession = sqlSessionFactory.openSession();
+        SqlSession openSession = sqlSessionFactory.openSession(true);
         try {
             // 3、获取接口的实现类对象
             //会为接口自动的创建一个代理对象，代理对象去执行增删改查方法
@@ -65,6 +65,27 @@ public class MyBatisTest02 {
             Employee employee = mapper.getEmpById(1);
             System.out.println(mapper.getClass());//class com.sun.proxy.$Proxy4
             System.out.println(employee);
+        } finally {
+            openSession.close();
+        }
+
+    }
+
+    //插入操作
+    @Test
+    public void test02() throws IOException {
+        // 1、获取sqlSessionFactory对象
+        SqlSessionFactory sqlSessionFactory = getSqlSessionFactory();
+        // 2、获取sqlSession对象
+        SqlSession openSession = sqlSessionFactory.openSession(true);
+        try {
+            // 3、获取接口的实现类对象
+            //会为接口自动的创建一个代理对象，代理对象去执行增删改查方法
+            EmployeeDao mapper = openSession.getMapper(EmployeeDao.class);
+            Employee employee = new Employee(null,"gumin","gumin@126.cn",1);
+            int number = mapper.insertEmployee(employee);
+            System.out.println(number);
+            System.out.println(employee.getId());
         } finally {
             openSession.close();
         }
