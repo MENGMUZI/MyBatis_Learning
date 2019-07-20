@@ -14,6 +14,7 @@
 
 
     <!--public Lock getKeyByIdSimple(Integer id);-->
+    <!--使用select属性指定分步查询-->
     <select id="getKeyByIdSimple" resultMap="myKey02">
         select * from t_key where id=#{id}
     </select>

@@ -265,6 +265,7 @@ public class MyBatisTest02 {
 
 
     //使用select属性指定分步查询
+    //配置开启按需加载和延迟加载
     @Test
     public void testLock02() throws IOException {
         // 1、获取sqlSessionFactory对象
@@ -276,9 +277,20 @@ public class MyBatisTest02 {
             //会为接口自动的创建一个代理对象，代理对象去执行增删改查方法
             KeyDao mapper = openSession.getMapper(KeyDao.class);
             Key key = mapper.getKeyByIdSimple(1);
-            System.out.println(mapper.getClass());//class com.sun.proxy.$Proxy4
-            System.out.println(key);
+            //System.out.println(mapper.getClass());//class com.sun.proxy.$Proxy4
+            //System.out.println(key);
+            /**
+             * 如果只需要查询key的信息，就有可能造成性能的浪费
+             * 开启按需加载，要的时候再去查询
+             */
+            System.out.println(key.getKeyName());
 
+            Thread.sleep(2000);
+
+            System.out.println(key.getLock().getLockName());
+
+        } catch (InterruptedException e) {
+            e.printStackTrace();
         } finally {
             openSession.close();
         }

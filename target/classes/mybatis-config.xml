@@ -3,6 +3,7 @@
         PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-config.dtd">
 <configuration>
+
     <!--
         1、mybatis可以使用properties来引入外部properties配置文件的内容；
         resource：引入类路径下的资源
@@ -19,7 +20,18 @@
      -->
     <settings>
         <setting name="mapUnderscoreToCamelCase" value="true"/>
+
+        <!--setting标签中，开启延时加载和属性按需加载-->
+
+        <!--开启延时加载开关-->
+        <setting name="lazyLoadingEnabled" value="true"/>
+
+        <!--开启属性按需加载-->
+        <setting name="aggressiveLazyLoading" value="false"/>
+
     </settings>
+
+
 
     <!-- 3、typeAliases：别名处理器：可以为我们的java类型起别名
            别名不区分大小写
