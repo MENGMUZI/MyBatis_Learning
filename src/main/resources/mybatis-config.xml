@@ -110,5 +110,6 @@
         <mapper resource="EmployeeDao.xml" />
         <mapper resource="CatDao.xml"/>
         <mapper resource="KeyDao.xml"/>
+        <mapper resource="LockDao.xml"/>
     </mappers>
 </configuration>

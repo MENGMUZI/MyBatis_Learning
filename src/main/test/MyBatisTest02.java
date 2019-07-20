@@ -1,9 +1,11 @@
 import com.mmz.bean.Cat;
 import com.mmz.bean.Employee;
 import com.mmz.bean.Key;
+import com.mmz.bean.Lock;
 import com.mmz.dao.CatDao;
 import com.mmz.dao.EmployeeDao;
 import com.mmz.dao.KeyDao;
+import com.mmz.dao.LockDao;
 import org.apache.ibatis.io.Resources;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
@@ -12,6 +14,7 @@ import org.junit.Test;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -213,6 +216,7 @@ public class MyBatisTest02 {
 
     //Key表的联合查询
     //1.采用级联属性封装联合查询后的所有结果
+    //2.使用association定义级联属性
     @Test
     public void testKey01() throws IOException {
         // 1、获取sqlSessionFactory对象
@@ -231,6 +235,34 @@ public class MyBatisTest02 {
         }
 
     }
+
+    //查询Lock表中一对多的key的值
+    //collection 定义集合属性元素的封装
+    @Test
+    public void testLock01() throws IOException {
+        // 1、获取sqlSessionFactory对象
+        SqlSessionFactory sqlSessionFactory = getSqlSessionFactory();
+        // 2、获取sqlSession对象
+        SqlSession openSession = sqlSessionFactory.openSession(true);
+        try {
+            // 3、获取接口的实现类对象
+            //会为接口自动的创建一个代理对象，代理对象去执行增删改查方法
+            LockDao mapper = openSession.getMapper(LockDao.class);
+            Lock lock = mapper.getLockById(3);
+            System.out.println(mapper.getClass());//class com.sun.proxy.$Proxy4
+            System.out.println(lock);
+            List<Key> keys = lock.getKeys();
+            for (Key key : keys ) {
+                System.out.println(key);
+            }
+
+        } finally {
+            openSession.close();
+        }
+
+    }
+
+
 
 
 

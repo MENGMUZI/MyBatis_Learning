@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mmz.dao.LockDao">
+
+    <!--public Lock getLockById(Integer id);-->
+    <select id="getLockById" resultMap="myLock">
+        select l.* ,k.id kid,keyName,k.lockId from t_lock l
+        left join t_key k on l.id=k.lockid
+        where l.id =#{id}
+    </select>
+    <resultMap id="myLock" type="com.mmz.bean.Lock">
+        <id property="id" column="id"/>
+        <result property="lockName" column="lockName"/>
+        <!--collection 定义集合属性元素的封装-->
+        <collection property="keys" ofType="com.mmz.bean.Key">
+            <!--标签体中指定集合中这个元素的封装规则-->
+            <id property="id" column="kid"/>
+            <result property="keyName" column="keyName"/>
+        </collection>
+
+
+    </resultMap>
+</mapper>
