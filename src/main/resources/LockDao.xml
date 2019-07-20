@@ -20,6 +20,10 @@
             <result property="keyName" column="keyName"/>
         </collection>
 
-
     </resultMap>
+
+    <!--public Lock getLockByIdSimple(Integer id);-->
+    <select id="getLockByIdSimple" resultType="com.mmz.bean.Lock">
+        select * from t_lock where id=#{id}
+    </select>
 </mapper>

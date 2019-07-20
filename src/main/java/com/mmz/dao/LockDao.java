@@ -7,4 +7,6 @@ public interface LockDao {
 
     public Lock getLockById(Integer id);
 
+    public Lock getLockByIdSimple(Integer id);
+
 }

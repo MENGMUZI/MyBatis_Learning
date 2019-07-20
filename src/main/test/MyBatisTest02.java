@@ -237,7 +237,7 @@ public class MyBatisTest02 {
     }
 
     //查询Lock表中一对多的key的值
-    //collection 定义集合属性元素的封装
+    //collection 定义集合属性元素的封装(重点)
     @Test
     public void testLock01() throws IOException {
         // 1、获取sqlSessionFactory对象
@@ -261,6 +261,32 @@ public class MyBatisTest02 {
         }
 
     }
+
+
+
+    //使用select属性指定分步查询
+    @Test
+    public void testLock02() throws IOException {
+        // 1、获取sqlSessionFactory对象
+        SqlSessionFactory sqlSessionFactory = getSqlSessionFactory();
+        // 2、获取sqlSession对象
+        SqlSession openSession = sqlSessionFactory.openSession(true);
+        try {
+            // 3、获取接口的实现类对象
+            //会为接口自动的创建一个代理对象，代理对象去执行增删改查方法
+            KeyDao mapper = openSession.getMapper(KeyDao.class);
+            Key key = mapper.getKeyByIdSimple(1);
+            System.out.println(mapper.getClass());//class com.sun.proxy.$Proxy4
+            System.out.println(key);
+
+        } finally {
+            openSession.close();
+        }
+
+    }
+
+
+
 
 
 

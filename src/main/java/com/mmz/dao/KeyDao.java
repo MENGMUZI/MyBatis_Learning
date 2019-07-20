@@ -1,6 +1,7 @@
 package com.mmz.dao;
 
 import com.mmz.bean.Key;
+import com.mmz.bean.Lock;
 
 /**
  * @author : mengmuzi
@@ -10,5 +11,7 @@ import com.mmz.bean.Key;
 public interface KeyDao {
 
     public Key getKeyById(Integer id);
+
+    public Key getKeyByIdSimple(Integer id);
 
 }

@@ -11,6 +11,38 @@
         where k.id=#{id}
     </select>
 
+
+
+    <!--public Lock getKeyByIdSimple(Integer id);-->
+    <!--使用select属性指定分步查询-->
+    <select id="getKeyByIdSimple" resultMap="myKey02">
+        select * from t_key where id=#{id}
+    </select>
+
+    
+    <!--自定义封装规则-->
+    <resultMap id="myKey02" type="com.mmz.bean.Key">
+        <id property="id" column="id"/>
+        <result property="keyName" column="keyName"/>
+        <!--告诉mybatis自己去调用一个查询去查询锁信息
+            select="" 指定一个查询SQL的唯一标识，
+            mybatis自动调用指定的SQL将查出来的 lock 封装进来
+            public Lock getLockByIdSimple(Integer id);
+            需要传入锁的id，告诉mybatis把哪一列的值传递过去
+            column:指定将哪一列的数据传递过去
+        -->
+        <association property="lock" javaType="com.mmz.bean.Lock"
+                     select="com.mmz.dao.LockDao.getLockByIdSimple"
+                     column="lockId"
+        />
+    </resultMap>
+
+
+
+
+
+
+
     <!--多表联合查询一般，用自定义封装，采用级联属性封装联合查询后的所有结果-->
     <!--
     <resultMap id="myKey" type="com.mmz.bean.Key">
