@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mmz.dao.TeacherDao">
+
+    <!--public Teacher getTeacherById(Integer id);-->
+    <resultMap id="teacherMap" type="com.mmz.bean.Teacher">
+        <id property="id" column="id"/>
+        <result property="name" column="teacherName"/>
+        <result property="address" column="address"/>
+        <result property="course" column="class_Name"/>
+        <result property="birth" column="birth_date"/>
+    </resultMap>
+
+    <select id="getTeacherById" resultMap="teacherMap">
+        select * from t_teacher where id=#{id}
+    </select>
+
+
+    <!--public List<Teacher> getTeacherByCondition(Teacher teacher);
+        teacher对象带什么属性就用什么查
+    -->
+
+    <!--if判断-->
+    <select id="getTeacherByCondition" resultMap="teacherMap">
+        select * from t_teacher
+        <where>
+            <!--test=" "编写判断条件
+            id!=null 取出传入JavaBean的属性的id的值，判断其是否为空
+            -->
+            <if test="id!=null">
+                id > #{id} and
+            </if>
+            <if test="name!=null">
+                teacherName like #{name} and
+            </if>
+            <if test="birth!=null">
+                birth_date &lt; #{birth}
+            </if>
+        </where>
+
+    </select>
+
+    <!--public List<Teacher> getTeacherByIdIn(List<Integer> ids);-->
+    <select id="getTeacherByIdIn" resultMap="teacherMap">
+        select * from t_teacher where id In
+        <!--帮忙遍历整个集合 collection="" 指定遍历集合的key-->
+        <foreach collection="ids" open="(" close=")" separator="," item="id_item">
+            #{id_item}
+        </foreach>
+
+    </select>
+
+    <!--public int updateTeacher(Teacher teacher);-->
+    <update id="updateTeacher">
+        update t_teacher
+        <set>
+            <if test="name!=null and !name.equals(&quot;&quot;)">
+                teacherName = #{name},
+            </if>
+            <if test="course!=null and !course.equals(&quot;&quot;)">
+                class_name = #{course},
+            </if>
+            <if test="address!=null and !address.equals(&quot;&quot;)">
+                address = #{address},
+            </if>
+            <if test="birth!=null and !birth.equals(&quot;&quot;)">
+                birth_date = #{birth},
+            </if>
+        </set>
+        <where>
+            id = #{id}
+        </where>
+    </update>
+
+
+</mapper>

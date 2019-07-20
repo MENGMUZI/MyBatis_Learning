@@ -34,6 +34,7 @@
         <association property="lock" javaType="com.mmz.bean.Lock"
                      select="com.mmz.dao.LockDao.getLockByIdSimple"
                      column="lockId"
+                     fetchType="lazy"
         />
     </resultMap>
 

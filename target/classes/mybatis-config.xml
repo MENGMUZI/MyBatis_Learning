@@ -123,5 +123,6 @@
         <mapper resource="CatDao.xml"/>
         <mapper resource="KeyDao.xml"/>
         <mapper resource="LockDao.xml"/>
+        <mapper resource="TeacherDao.xml"/>
     </mappers>
 </configuration>

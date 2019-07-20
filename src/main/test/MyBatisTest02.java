@@ -1,11 +1,5 @@
-import com.mmz.bean.Cat;
-import com.mmz.bean.Employee;
-import com.mmz.bean.Key;
-import com.mmz.bean.Lock;
-import com.mmz.dao.CatDao;
-import com.mmz.dao.EmployeeDao;
-import com.mmz.dao.KeyDao;
-import com.mmz.dao.LockDao;
+import com.mmz.bean.*;
+import com.mmz.dao.*;
 import org.apache.ibatis.io.Resources;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
@@ -14,10 +8,7 @@ import org.junit.Test;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @author : mengmuzi
@@ -298,11 +289,85 @@ public class MyBatisTest02 {
     }
 
 
+    //测试teacher
+    @Test
+    public void testTeacher01() throws IOException {
+        // 1、获取sqlSessionFactory对象
+        SqlSessionFactory sqlSessionFactory = getSqlSessionFactory();
+        // 2、获取sqlSession对象
+        SqlSession openSession = sqlSessionFactory.openSession(true);
+        try {
+            // 3、获取接口的实现类对象
+            //会为接口自动的创建一个代理对象，代理对象去执行增删改查方法
+            TeacherDao mapper = openSession.getMapper(TeacherDao.class);
+            Teacher teacher = mapper.getTeacherById(1);
+            System.out.println(teacher);
+        } finally {
+            openSession.close();
+        }
+    }
 
 
+    //测试动态SQL，if标签
+    @Test
+    public void testTeacher02() throws IOException {
+        // 1、获取sqlSessionFactory对象
+        SqlSessionFactory sqlSessionFactory = getSqlSessionFactory();
+        // 2、获取sqlSession对象
+        SqlSession openSession = sqlSessionFactory.openSession(true);
+        try {
+            // 3、获取接口的实现类对象
+            //会为接口自动的创建一个代理对象，代理对象去执行增删改查方法
+            TeacherDao mapper = openSession.getMapper(TeacherDao.class);
+            Teacher teacher = new Teacher();
+            //teacher.setId(1);
+            teacher.setName("%a%");
+            teacher.setBirth(new Date());
+            List<Teacher> teacherList = mapper.getTeacherByCondition(teacher);
+            System.out.println(teacherList);
+        } finally {
+            openSession.close();
+        }
+    }
 
+    //foreach遍历
+    @Test
+    public void testTeacher03() throws IOException {
+        // 1、获取sqlSessionFactory对象
+        SqlSessionFactory sqlSessionFactory = getSqlSessionFactory();
+        // 2、获取sqlSession对象
+        SqlSession openSession = sqlSessionFactory.openSession(true);
+        try {
+            // 3、获取接口的实现类对象
+            //会为接口自动的创建一个代理对象，代理对象去执行增删改查方法
+            TeacherDao mapper = openSession.getMapper(TeacherDao.class);
+            List<Teacher> list = mapper.getTeacherByIdIn(Arrays.asList(1,2,3));
+            System.out.println(list);
+        } finally {
+            openSession.close();
+        }
+    }
 
-
-
+    //set完成动态更新
+    @Test
+    public void testUpdate01() throws IOException {
+        // 1、获取sqlSessionFactory对象
+        SqlSessionFactory sqlSessionFactory = getSqlSessionFactory();
+        // 2、获取sqlSession对象
+        SqlSession openSession = sqlSessionFactory.openSession(true);
+        try {
+            // 3、获取接口的实现类对象
+            //会为接口自动的创建一个代理对象，代理对象去执行增删改查方法
+            TeacherDao mapper = openSession.getMapper(TeacherDao.class);
+            Teacher teacher = new Teacher();
+            teacher.setId(2);
+            teacher.setName("花花");
+            teacher.setAddress("东京");
+            int result =  mapper.updateTeacher(teacher);
+            System.out.println(result);
+        } finally {
+            openSession.close();
+        }
+    }
 
 }
