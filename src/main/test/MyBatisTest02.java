@@ -8,6 +8,8 @@ import org.junit.Test;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @author : mengmuzi
@@ -91,5 +93,50 @@ public class MyBatisTest02 {
         }
 
     }
+
+    //多个参数查询操作
+    @Test
+    public void test03() throws IOException {
+        // 1、获取sqlSessionFactory对象
+        SqlSessionFactory sqlSessionFactory = getSqlSessionFactory();
+        // 2、获取sqlSession对象
+        SqlSession openSession = sqlSessionFactory.openSession(true);
+        try {
+            // 3、获取接口的实现类对象
+            //会为接口自动的创建一个代理对象，代理对象去执行增删改查方法
+            EmployeeDao mapper = openSession.getMapper(EmployeeDao.class);
+
+            Employee employee = mapper.getEmpByIdAndEmpName(1,"admin");
+            System.out.println(employee);
+        } finally {
+            openSession.close();
+        }
+
+    }
+
+    //传入Map参数查询操作
+    @Test
+    public void test04() throws IOException {
+        // 1、获取sqlSessionFactory对象
+        SqlSessionFactory sqlSessionFactory = getSqlSessionFactory();
+        // 2、获取sqlSession对象
+        SqlSession openSession = sqlSessionFactory.openSession(true);
+        try {
+            // 3、获取接口的实现类对象
+            //会为接口自动的创建一个代理对象，代理对象去执行增删改查方法
+            EmployeeDao mapper = openSession.getMapper(EmployeeDao.class);
+
+            Map<String,Object> map = new HashMap<>();
+            map.put("id",1);
+            map.put("empName","admin");
+
+            Employee employee = mapper.getEmpByIdAndEmpNameByMap(map);
+            System.out.println(employee);
+        } finally {
+            openSession.close();
+        }
+
+    }
+
 
 }

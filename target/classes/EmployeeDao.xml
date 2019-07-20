@@ -17,6 +17,34 @@
         select * from t_employee where id = #{id}
     </select>
 
+    <!--传入参数
+        1）单个参数：
+            基本类型 #{随便写}
+        2）多个参数
+        public Employee getEmpByIdAndEmpName(Integer id , String empName);
+            取值，#{参数名}是无效的
+            可用，0，1参数的索引或者param1，param2
+            传入多个参数，mybatis会自动封装到map中保存，封装的时候的key就是参数的索引
+        使用@Param为参数指定key，命名参数
+        3)传入pojo
+            #{属性名}
+        4）传入map：将多个参数封装起来
+    -->
+
+    <!--public Employee getEmpByIdAndEmpName(@Param("id") int id , @Param("empName") String empName);-->
+    <select id="getEmpByIdAndEmpName" resultType="com.mmz.bean.Employee">
+        <!--select * from t_employee where id = #{param1} and empName=#{param2}-->
+        select * from t_employee where id = #{id} and empName=#{empName}
+    </select>
+
+    <!--public Employee getEmpByIdAndEmpNameByMap(Map<String,Object> map);-->
+
+    <select id="getEmpByIdAndEmpNameByMap" resultType="com.mmz.bean.Employee">
+        select * from t_employee where id = #{id} and empName=#{empName}
+    </select>
+
+
+
     <!--public int updateEmployee(Employee employee) 增删改不需要写返回值类型，返回的影响的行数
         mybatis自动判断，如果是数字（int，long）-->
     <update id="updateEmployee">
@@ -38,6 +66,42 @@
     -->
     <insert id="insertEmployee" useGeneratedKeys="true" keyProperty="id">
         insert into t_employee (empName,gender,email) values (#{empName},#{gender},#{email})
+    </insert>
+
+    <!--
+    获取非自增主键的值：
+        Oracle不支持自增；Oracle使用序列来模拟自增；
+        每次插入的数据的主键是从序列中拿到的值；如何获取到这个值；
+     -->
+    <insert id="insertEmployee2" databaseId="oracle">
+        <!--
+        keyProperty:查出的主键值封装给javaBean的哪个属性
+        order="BEFORE":当前sql在插入sql之前运行
+               AFTER：当前sql在插入sql之后运行
+        resultType:查出的数据的返回值类型
+
+        BEFORE运行顺序：
+            先运行selectKey查询id的sql；查出id值封装给javaBean的id属性
+            在运行插入的sql；就可以取出id属性对应的值
+        AFTER运行顺序：
+            先运行插入的sql（从序列中取出新值作为id）；
+            再运行selectKey查询id的sql；
+         -->
+        <selectKey keyProperty="id" order="BEFORE" resultType="Integer">
+            <!-- 编写查询主键的sql语句 -->
+            <!-- BEFORE-->
+            select EMPLOYEES_SEQ.nextval from dual
+            <!-- AFTER：
+             select EMPLOYEES_SEQ.currval from dual -->
+        </selectKey>
+
+        <!-- 插入时的主键是从序列中拿到的 -->
+        <!-- BEFORE:-->
+        insert into employees(EMPLOYEE_ID,LAST_NAME,EMAIL)
+        values(#{id},#{lastName},#{email<!-- ,jdbcType=NULL -->})
+        <!-- AFTER：
+        insert into employees(EMPLOYEE_ID,LAST_NAME,EMAIL)
+        values(employees_seq.nextval,#{lastName},#{email}) -->
     </insert>
 
 

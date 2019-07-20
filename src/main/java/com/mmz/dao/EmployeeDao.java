@@ -1,6 +1,9 @@
 package com.mmz.dao;
 
 import com.mmz.bean.Employee;
+import org.apache.ibatis.annotations.Param;
+
+import java.util.Map;
 
 /**
  * @author : mengmuzi
@@ -10,6 +13,10 @@ import com.mmz.bean.Employee;
 public interface EmployeeDao {
     //按照员工ID查询员工
     public Employee getEmpById(Integer id);
+
+    public Employee getEmpByIdAndEmpName(@Param("id") int id , @Param("empName") String empName);
+
+    public Employee getEmpByIdAndEmpNameByMap(Map<String,Object> map);
 
     //测试增删改查
     public int updateEmployee(Employee employee , Integer id);
