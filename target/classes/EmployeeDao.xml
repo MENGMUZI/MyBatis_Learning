@@ -63,6 +63,19 @@
     </select>
 
 
+    <!--public Map<String,Object> getAllEmployeeReturnMap();-->
+    <!--注意这个里面的resultType="Employee"应该是单个的类型-->
+    <select id="getAllEmployeeReturnMap" resultType="com.mmz.bean.Employee">
+        select * from t_employee
+    </select>
+
+
+    <!--public Map<String,Employee> getEmpByIdReturnMap(Integer id);-->
+    <select id="getEmpByIdReturnMap" resultType="map">
+        select * from t_employee where id=#{id}
+    </select>
+
+
 
     <!--public int updateEmployee(Employee employee) 增删改不需要写返回值类型，返回的影响的行数
         mybatis自动判断，如果是数字（int，long）-->

@@ -108,5 +108,6 @@
         -->
         <!-- 批量注册： -->
         <mapper resource="EmployeeDao.xml" />
+        <mapper resource="CatDao.xml"/>
     </mappers>
 </configuration>

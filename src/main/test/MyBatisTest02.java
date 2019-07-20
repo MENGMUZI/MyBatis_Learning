@@ -1,4 +1,6 @@
+import com.mmz.bean.Cat;
 import com.mmz.bean.Employee;
+import com.mmz.dao.CatDao;
 import com.mmz.dao.EmployeeDao;
 import org.apache.ibatis.io.Resources;
 import org.apache.ibatis.session.SqlSession;
@@ -36,24 +38,7 @@ public class MyBatisTest02 {
      *
      * @throws IOException
      */
-    @Test
-    public void test() throws IOException {
 
-        // 2、获取sqlSession实例，能直接执行已经映射的sql语句
-        // sql的唯一标识：statement Unique identifier matching the statement to use.
-        // 执行sql要用的参数：parameter A parameter object to pass to the statement.
-        SqlSessionFactory sqlSessionFactory = getSqlSessionFactory();
-
-        SqlSession openSession = sqlSessionFactory.openSession(true);
-        try {
-            Employee employee = openSession.selectOne(
-                    "com.atguigu.mybatis.dao.EmployeeMapper.getEmpById", 1);
-            System.out.println(employee);
-        } finally {
-            openSession.close();
-        }
-
-    }
     //查询操作
     @Test
     public void test01() throws IOException {
@@ -158,6 +143,72 @@ public class MyBatisTest02 {
         }
 
     }
+
+    //根据id查询表中元素封装为map
+    @Test
+    public void test06() throws IOException {
+        // 1、获取sqlSessionFactory对象
+        SqlSessionFactory sqlSessionFactory = getSqlSessionFactory();
+        // 2、获取sqlSession对象
+        SqlSession openSession = sqlSessionFactory.openSession(true);
+        try {
+            // 3、获取接口的实现类对象
+            //会为接口自动的创建一个代理对象，代理对象去执行增删改查方法
+            EmployeeDao mapper = openSession.getMapper(EmployeeDao.class);
+            Map<String,Object> map = mapper.getEmpByIdReturnMap(2);
+            System.out.println(map);
+        } finally {
+            openSession.close();
+        }
+
+    }
+
+    //查询表中所有的元素封装为map(重要！！)
+    @Test
+    public void test07() throws IOException {
+        // 1、获取sqlSessionFactory对象
+        SqlSessionFactory sqlSessionFactory = getSqlSessionFactory();
+        // 2、获取sqlSession对象
+        SqlSession openSession = sqlSessionFactory.openSession(true);
+        try {
+            // 3、获取接口的实现类对象
+            //会为接口自动的创建一个代理对象，代理对象去执行增删改查方法
+            EmployeeDao mapper = openSession.getMapper(EmployeeDao.class);
+            Map<String,Employee> map = mapper.getAllEmployeeReturnMap();
+            System.out.println(map);
+        } finally {
+            openSession.close();
+        }
+
+    }
+
+    //cat表的查询操作
+    /**
+     * MyBatis自动封装的结果是：
+     *   1）按照列名和属性名一一对应的规则（不区分大小写）
+     *   2）如果不一一对应
+     *      1）开启驼峰命名的规则（aabb aa_Bb）
+     *      2）自定义结果集resultMap，数据库和JavaBean中的映射对应
+     */
+    @Test
+    public void testCat01() throws IOException {
+        // 1、获取sqlSessionFactory对象
+        SqlSessionFactory sqlSessionFactory = getSqlSessionFactory();
+        // 2、获取sqlSession对象
+        SqlSession openSession = sqlSessionFactory.openSession(true);
+        try {
+            // 3、获取接口的实现类对象
+            //会为接口自动的创建一个代理对象，代理对象去执行增删改查方法
+            CatDao mapper = openSession.getMapper(CatDao.class);
+            Cat cat = mapper.getCatById(1);
+            System.out.println(mapper.getClass());//class com.sun.proxy.$Proxy4
+            System.out.println(cat);
+        } finally {
+            openSession.close();
+        }
+
+    }
+
 
 
 
