@@ -43,9 +43,6 @@ public class MyBatisTest {
         //System.out.println(result);
 
 
-
-
-
         //5.关闭会话
         //需要手动提交
         //openSession.commit();

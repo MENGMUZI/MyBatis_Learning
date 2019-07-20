@@ -18,4 +18,7 @@ public interface EmployeeDao {
 
     public int insertEmployee(Employee employee);
 
+    public int insertEmployee2(Employee employee);
+
+
 }
