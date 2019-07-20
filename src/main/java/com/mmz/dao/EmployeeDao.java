@@ -3,6 +3,7 @@ package com.mmz.dao;
 import com.mmz.bean.Employee;
 import org.apache.ibatis.annotations.Param;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -11,6 +12,9 @@ import java.util.Map;
  * @description:
  */
 public interface EmployeeDao {
+    //查询所有员工
+    public List<Employee> getAllEmployee();
+
     //按照员工ID查询员工
     public Employee getEmpById(Integer id);
 

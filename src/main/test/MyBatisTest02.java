@@ -9,6 +9,7 @@ import org.junit.Test;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -137,6 +138,27 @@ public class MyBatisTest02 {
         }
 
     }
+    //查询表中所有的元素
+    @Test
+    public void test05() throws IOException {
+        // 1、获取sqlSessionFactory对象
+        SqlSessionFactory sqlSessionFactory = getSqlSessionFactory();
+        // 2、获取sqlSession对象
+        SqlSession openSession = sqlSessionFactory.openSession(true);
+        try {
+            // 3、获取接口的实现类对象
+            //会为接口自动的创建一个代理对象，代理对象去执行增删改查方法
+            EmployeeDao mapper = openSession.getMapper(EmployeeDao.class);
+            List<Employee> list = mapper.getAllEmployee();
+            for (Employee element : list) {
+                System.out.println(element);
+            }
+        } finally {
+            openSession.close();
+        }
+
+    }
+
 
 
 }
